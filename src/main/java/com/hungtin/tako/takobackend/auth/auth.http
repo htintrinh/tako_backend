@@ -6,3 +6,18 @@ Content-Type: application/json
   "password": "123",
   "email": "hungtin.bk12@gmail.com"
 }
+
+###
+
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "123"
+}
+
+###
+
+GET http://localhost:8080/user/detail
+Authorization: Bearer 5edf2415-f649-48c5-85d7-ca5b0fb84022

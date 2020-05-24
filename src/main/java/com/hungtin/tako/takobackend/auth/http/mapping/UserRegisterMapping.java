@@ -1,5 +1,6 @@
-package com.hungtin.tako.takobackend.auth.http;
+package com.hungtin.tako.takobackend.auth.http.mapping;
 
+import com.hungtin.tako.takobackend.auth.http.UserRegisterRequest;
 import com.hungtin.tako.takobackend.auth.model.UserAccount;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
