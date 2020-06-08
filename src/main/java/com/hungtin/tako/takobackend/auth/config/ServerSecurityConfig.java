@@ -33,10 +33,11 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/user/login", "/h2-console/**", "/user/register").permitAll()
+        .antMatchers("/user/login", "/h2-console/**", "/user/register", "/user/auth-code/**")
+        .permitAll()
         .anyRequest().authenticated();
-    http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-    http.headers().frameOptions().sameOrigin();
+    http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .headers().frameOptions().sameOrigin();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 

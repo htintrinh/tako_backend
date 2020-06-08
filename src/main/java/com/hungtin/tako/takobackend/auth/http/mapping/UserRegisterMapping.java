@@ -15,6 +15,7 @@ public class UserRegisterMapping {
   public UserAccount transform(UserRegisterRequest request) {
     return UserAccount.builder().username(request.getUsername())
         .password(passwordEncoder.encode(request.getPassword()))
+        .isEnable(false)
         .email(request.getEmail()).build();
   }
 

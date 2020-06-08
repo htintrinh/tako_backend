@@ -8,16 +8,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
 public class UserAccount implements UserDetails {
 
   @Id
@@ -31,6 +31,8 @@ public class UserAccount implements UserDetails {
   private String email;
 
   private String phone;
+
+  private boolean isEnable;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,7 +65,6 @@ public class UserAccount implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return this.isEnable;
   }
-
 }
