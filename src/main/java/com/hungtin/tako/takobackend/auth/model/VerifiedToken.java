@@ -28,6 +28,6 @@ public class VerifiedToken {
   private String value;
   private Instant expireAt;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @OneToOne()
   private UserAccount user;
 }
