@@ -16,6 +16,7 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -67,9 +68,8 @@ public class AuthService {
     UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
         request.getUsername(), request.getPassword());
 
-    authenticationManager.authenticate(token);
-    UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-    String jwtToken = jwtTokenService.generateToken(userDetails);
+    Authentication authenticatedToken = authenticationManager.authenticate(token);
+    String jwtToken = jwtTokenService.generateToken(authenticatedToken);
     // return the response
     return new LoginResponse(jwtToken);
   }

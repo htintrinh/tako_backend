@@ -36,12 +36,18 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
+  /**
+   * Configure the authentication manager to use the user detail service
+   * that get injected to this class above
+   * @param auth the builder for authentication manger
+   * @throws Exception just to confirm with the description
+   */
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(userDetailsService);
   }
 
-  //  @Override
+  // This is necessary to create the
   @Bean
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
