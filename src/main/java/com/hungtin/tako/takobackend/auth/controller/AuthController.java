@@ -5,15 +5,12 @@ import com.hungtin.tako.takobackend.auth.http.LoginResponse;
 import com.hungtin.tako.takobackend.auth.http.UserRegisterRequest;
 import com.hungtin.tako.takobackend.auth.http.mapping.UserRegisterMapping;
 import com.hungtin.tako.takobackend.auth.model.UserAccount;
-import com.hungtin.tako.takobackend.auth.model.UserToken;
 import com.hungtin.tako.takobackend.auth.repo.UserAccountRepo;
 import com.hungtin.tako.takobackend.auth.repo.UserTokenRepo;
 import com.hungtin.tako.takobackend.auth.repo.VerifiedTokenRepo;
 import com.hungtin.tako.takobackend.auth.service.AuthService;
 import com.hungtin.tako.takobackend.mail.model.MailNotification;
 import com.hungtin.tako.takobackend.mail.service.MailService;
-import java.util.UUID;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +48,7 @@ public class AuthController {
     mailService.sendMail(new MailNotification(
         "Verify Code",
         "Click this link to verify you account:"
-            + "http://localhost:8080/user/auth-code/" + tokenValue,
+            + "http://localhost:8080/auth/confirm-code/" + tokenValue,
         userAccount.getEmail()));
 
     return ResponseEntity.ok("User registered");
@@ -61,18 +58,13 @@ public class AuthController {
   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest req) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
-    UserAccount user = (UserAccount) userDetailsService.loadUserByUsername(req.getUsername());
-    String tokenValue = UUID.randomUUID().toString();
-    UserToken token = UserToken.builder().userAccount(user).value(tokenValue).build();
-    tokenRepo.save(token);
 
-    return ResponseEntity.ok(LoginResponse.builder().tokenValue(tokenValue).build());
+    return ResponseEntity.ok(authService.loginWithJwtToken(req));
   }
 
-  @GetMapping("/auth-code/{token}")
-  @Transactional
+  @GetMapping("/confirm-code/{token}")
   public ResponseEntity<String> authVerificationCode(@PathVariable String token) {
-    if (authService.isValidToken(token)) {
+    if (authService.verifyToken(token)) {
       return ResponseEntity.ok("Authentication successfully");
     }
 

@@ -2,6 +2,7 @@ package com.hungtin.tako.takobackend.auth.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,10 +25,12 @@ public class UserAccount implements UserDetails {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @Column(unique = true)
   private String username;
 
   private String password;
 
+  @Column(unique = true)
   private String email;
 
   private String phone;
