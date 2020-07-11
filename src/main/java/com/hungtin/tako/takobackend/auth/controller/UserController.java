@@ -1,13 +1,12 @@
 package com.hungtin.tako.takobackend.auth.controller;
 
-import com.hungtin.tako.takobackend.auth.http.UserAccountDetailResponse;
-import com.hungtin.tako.takobackend.auth.http.mapping.UserAccountMapping;
+import com.hungtin.tako.takobackend.auth.http.UserAccountMapper;
+import com.hungtin.tako.takobackend.auth.http.UserDetailResponse;
 import com.hungtin.tako.takobackend.auth.model.UserAccount;
-import com.hungtin.tako.takobackend.auth.repo.UserAccountRepo;
+import com.hungtin.tako.takobackend.auth.service.AuthService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,17 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserController {
 
-  private final UserAccountRepo userAccountRepo;
-  private final UserAccountMapping userAccountMapping;
+  private final AuthService authService;
+  private final UserAccountMapper userAccountMapper;
 
   @GetMapping("/me")
-  public ResponseEntity<UserAccountDetailResponse> me() {
-    String username = (String) SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal();
-    UserAccount user = userAccountRepo.findByUsername(username).orElseThrow();
+  @Transactional
+  public ResponseEntity<UserDetailResponse> me() {
+    UserAccount userAccount = authService.getCurrentUser();
 
-    UserAccountDetailResponse response = userAccountMapping.transform(user);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return ResponseEntity.ok(userAccountMapper.transform(userAccount));
   }
-
 }

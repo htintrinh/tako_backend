@@ -27,8 +27,9 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
   private final JwtTokenService jwtTokenService;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-      FilterChain filterChain) throws ServletException, IOException {
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
 
     // if the request got authorization header and it starts with Bearer
     // and the current thread hasn't login yet
@@ -39,8 +40,9 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
       String username = jwtTokenService.validateToken(token);
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-      UsernamePasswordAuthenticationToken loggedInToken = new UsernamePasswordAuthenticationToken(
-          userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+      UsernamePasswordAuthenticationToken loggedInToken =
+          new UsernamePasswordAuthenticationToken(
+              userDetails, userDetails.getPassword(), userDetails.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(loggedInToken);
     }
 
@@ -53,6 +55,5 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
       return Optional.of(authorizationHeader.substring(7));
     }
     return Optional.empty();
-
   }
 }

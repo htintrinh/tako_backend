@@ -15,14 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {
 
-  @Mock
-  private UserAccountRepo userAccountRepo;
-  @Mock
-  private VerifiedTokenRepo verifiedTokenRepo;
+  @Mock private UserAccountRepo userAccountRepo;
+  @Mock private VerifiedTokenRepo verifiedTokenRepo;
 
-  @InjectMocks
-  private AuthService authService;
-
+  @InjectMocks private AuthService authService;
 
   @Test
   void test_isValidToken_WhenTokenNotExistReturnFalse() {
@@ -30,7 +26,5 @@ public class AuthServiceTest {
 
     given(verifiedTokenRepo.findByValue(valueToken)).willReturn(Optional.empty());
     assertThat(authService.verifyToken("123")).isEqualTo(false);
-
   }
-
 }

@@ -1,6 +1,5 @@
 package com.hungtin.tako.takobackend.auth.http;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

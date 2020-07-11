@@ -28,10 +28,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
   }
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-      FilterChain filterChain) throws ServletException, IOException {
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
     String authorizationHeader = request.getHeader("Authorization");
-    if (Objects.nonNull(authorizationHeader) && authorizationHeader.startsWith("Bearer ")
+    if (Objects.nonNull(authorizationHeader)
+        && authorizationHeader.startsWith("Bearer ")
         && SecurityContextHolder.getContext().getAuthentication() == null) {
       String tokenValue = authorizationHeader.substring(7);
       Optional<UserToken> token = userTokenRepo.findOneByValue(tokenValue);
@@ -41,10 +43,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
       }
       UserAccount userAccount = token.get().getUserAccount();
 
-      UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-          userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
+      UsernamePasswordAuthenticationToken authToken =
+          new UsernamePasswordAuthenticationToken(
+              userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(authToken);
-
     }
     filterChain.doFilter(request, response);
   }

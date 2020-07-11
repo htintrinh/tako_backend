@@ -25,20 +25,26 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
+    http.csrf()
+        .disable()
         .authorizeRequests()
         .antMatchers("/auth/login", "/auth/register", "/auth/confirm-code/**")
         .permitAll()
-        .anyRequest().authenticated();
-//    http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .anyRequest()
+        .authenticated();
+    //    http.addFilterBefore(tokenAuthenticationFilter,
+    // UsernamePasswordAuthenticationFilter.class)
     http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .headers().frameOptions().sameOrigin();
+        .headers()
+        .frameOptions()
+        .sameOrigin();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
   /**
-   * Configure the authentication manager to use the user detail service
-   * that get injected to this class above
+   * Configure the authentication manager to use the user detail service that get injected to this
+   * class above
+   *
    * @param auth the builder for authentication manger
    * @throws Exception just to confirm with the description
    */

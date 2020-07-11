@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenService {
 
+  private static final int EXPIRATION_DURATION = 60 * 60;
+
   @Value("${jwt.secret}")
   private String secret;
-
-  private static final int EXPIRATION_DURATION = 60 * 60;
 
   public String generateToken(Authentication authentication) {
     Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -40,6 +40,4 @@ public class JwtTokenService {
     DecodedJWT decodedJWT = JWT.decode(token);
     return decodedJWT.getClaim("username").asString();
   }
-
-
 }

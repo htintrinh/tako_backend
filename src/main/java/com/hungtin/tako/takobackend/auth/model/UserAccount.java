@@ -1,12 +1,15 @@
 package com.hungtin.tako.takobackend.auth.model;
 
+import com.hungtin.tako.takobackend.user.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +39,9 @@ public class UserAccount implements UserDetails {
   private String phone;
 
   private boolean isEnable;
+
+  @OneToOne(fetch = FetchType.LAZY)
+  private User user;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

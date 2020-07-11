@@ -26,6 +26,5 @@ public class UserToken {
 
   private Instant expireAt;
 
-  @ManyToOne
-  private UserAccount userAccount;
+  @ManyToOne private UserAccount userAccount;
 }

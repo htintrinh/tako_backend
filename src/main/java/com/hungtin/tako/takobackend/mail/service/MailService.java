@@ -17,24 +17,25 @@ public class MailService {
 
   private final JavaMailSender mailSender;
   private final MailContentBuilder mailContentBuilder;
+
   @Value("${email.from}")
   private String fromAddress;
 
-  public MailService(JavaMailSender mailSender,
-      MailContentBuilder mailContentBuilder) {
+  public MailService(JavaMailSender mailSender, MailContentBuilder mailContentBuilder) {
     this.mailSender = mailSender;
     this.mailContentBuilder = mailContentBuilder;
   }
 
   @Async
   public void sendMail(MailNotification mailNotification) {
-    MimeMessagePreparator preparator = mimeMessage -> {
-      MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-      helper.setFrom(fromAddress);
-      helper.setSubject(mailNotification.getSubject());
-      helper.setTo(mailNotification.getRecipient());
-      helper.setText(mailContentBuilder.build(mailNotification.getBody()));
-    };
+    MimeMessagePreparator preparator =
+        mimeMessage -> {
+          MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+          helper.setFrom(fromAddress);
+          helper.setSubject(mailNotification.getSubject());
+          helper.setTo(mailNotification.getRecipient());
+          helper.setText(mailContentBuilder.build(mailNotification.getBody()));
+        };
     try {
       mailSender.send(preparator);
       log.info("Send verification email successfully for email " + mailNotification.getRecipient());

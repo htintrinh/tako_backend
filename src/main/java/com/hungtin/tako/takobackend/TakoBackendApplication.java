@@ -11,5 +11,4 @@ public class TakoBackendApplication {
   public static void main(String[] args) {
     SpringApplication.run(TakoBackendApplication.class, args);
   }
-
 }

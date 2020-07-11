@@ -2,12 +2,16 @@ package com.hungtin.tako.takobackend.auth.service;
 
 import com.hungtin.tako.takobackend.auth.http.LoginRequest;
 import com.hungtin.tako.takobackend.auth.http.LoginResponse;
+import com.hungtin.tako.takobackend.auth.http.UserAccountMapper;
+import com.hungtin.tako.takobackend.auth.http.UserRegisterRequest;
 import com.hungtin.tako.takobackend.auth.model.UserAccount;
 import com.hungtin.tako.takobackend.auth.model.UserToken;
 import com.hungtin.tako.takobackend.auth.model.VerifiedToken;
 import com.hungtin.tako.takobackend.auth.repo.UserAccountRepo;
+import com.hungtin.tako.takobackend.auth.repo.UserRepo;
 import com.hungtin.tako.takobackend.auth.repo.UserTokenRepo;
 import com.hungtin.tako.takobackend.auth.repo.VerifiedTokenRepo;
+import com.hungtin.tako.takobackend.user.User;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
@@ -17,7 +21,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,15 +36,18 @@ public class AuthService {
   private final UserDetailsService userDetailsService;
   private final UserTokenRepo userTokenRepo;
   private final JwtTokenService jwtTokenService;
+  private final UserRepo userRepo;
+  private final UserAccountMapper userAccountMapper;
 
   public VerifiedToken makeVerifiedToken(UserAccount userAccount) {
     // create verified token
     String tokenValue = UUID.randomUUID().toString();
-    VerifiedToken token = VerifiedToken.builder()
-        .user(userAccount)
-        .value(tokenValue)
-        .expireAt(Instant.now().plus(Duration.ofHours(24)))
-        .build();
+    VerifiedToken token =
+        VerifiedToken.builder()
+            .user(userAccount)
+            .value(tokenValue)
+            .expireAt(Instant.now().plus(Duration.ofHours(24)))
+            .build();
     verifiedTokenRepo.save(token);
 
     return token;
@@ -65,8 +72,8 @@ public class AuthService {
   }
 
   public LoginResponse loginWithJwtToken(LoginRequest request) {
-    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-        request.getUsername(), request.getPassword());
+    UsernamePasswordAuthenticationToken token =
+        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 
     Authentication authenticatedToken = authenticationManager.authenticate(token);
     String jwtToken = jwtTokenService.generateToken(authenticatedToken);
@@ -75,9 +82,8 @@ public class AuthService {
   }
 
   public LoginResponse loginWithTokenServerBase(LoginRequest request) {
-    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-        request.getUsername(),
-        request.getPassword());
+    UsernamePasswordAuthenticationToken token =
+        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
     // if authenticate without any exception, create the token
     UserAccount user = (UserAccount) userDetailsService.loadUserByUsername(request.getUsername());
     String tokenValue = UUID.randomUUID().toString();
@@ -86,5 +92,21 @@ public class AuthService {
 
     // return the response
     return new LoginResponse(tokenValue);
+  }
+
+  @Transactional
+  public UserAccount createUserAccount(UserRegisterRequest request) {
+    UserAccount userAccount = userAccountMapper.transform(request);
+    userAccount = userAccountRepo.save(userAccount);
+    User user = User.builder().userAccount(userAccount).build();
+    userRepo.save(user);
+    userAccount.setUser(user);
+    userAccount = userAccountRepo.save(userAccount);
+
+    return userAccount;
+  }
+
+  public UserAccount getCurrentUser() {
+    return (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 }

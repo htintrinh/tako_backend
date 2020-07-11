@@ -1,30 +1,29 @@
-package com.hungtin.tako.takobackend.auth.model;
+package com.hungtin.tako.takobackend.post.model;
 
-import java.time.Instant;
+import com.hungtin.tako.takobackend.user.User;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class VerifiedToken {
+public class Post {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @NotNull private String value;
-  private Instant expireAt;
+  private String title;
+  private String body;
 
-  @OneToOne() private UserAccount user;
+  @ManyToOne private User user;
 }

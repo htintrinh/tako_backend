@@ -29,4 +29,4 @@ Authorization: Bearer 5edf2415-f649-48c5-85d7-ca5b0fb84022
 ###
 
 GET http://localhost:8080/user/me
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTQ1NDczNzcsInVzZXJuYW1lIjoidGVzdDIifQ.OA2jOMv1RDPhm7vfAyvSSokOL-UkecJm8G-ZNJkQFBY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTQ0ODgwOTcsInVzZXJuYW1lIjoidGVzdDIifQ.A9vDlShhcKIqr1m7KzJ836jAlTeSWwxeEEUN-S_gzGU
