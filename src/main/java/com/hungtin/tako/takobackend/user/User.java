@@ -29,13 +29,28 @@ public class User {
 
   private Date dob;
 
+  private String phone;
+
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
-  @OneToOne private UserAccount userAccount;
+  @OneToOne(mappedBy = "user")
+  private UserAccount userAccount;
 
   public enum Gender {
-    MALE,
-    FEMALE;
+    MALE {
+      @Override
+      public String toString() {
+        return "Male";
+      }
+    },
+    FEMALE {
+      @Override
+      public String toString() {
+        return "Female";
+      }
+    };
+
+    public abstract String toString();
   }
 }
