@@ -23,8 +23,10 @@ public class VerifiedToken {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @NotNull private String value;
+  @NotNull
+  private String value;
   private Instant expireAt;
 
-  @OneToOne() private UserAccount user;
+  @OneToOne()
+  private UserAccount user;
 }

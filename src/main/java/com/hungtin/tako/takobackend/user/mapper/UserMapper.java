@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserMapper {
+
   public UserResponse transform(User user) {
     return UserResponse.builder()
         .id(user.getId())

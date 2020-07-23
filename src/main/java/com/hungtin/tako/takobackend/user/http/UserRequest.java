@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 public class UserRequest {
+
   private String name;
   private Date dob;
   private User.Gender gender;

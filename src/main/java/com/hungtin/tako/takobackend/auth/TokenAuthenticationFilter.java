@@ -4,7 +4,6 @@ import com.hungtin.tako.takobackend.auth.model.UserAccount;
 import com.hungtin.tako.takobackend.auth.model.UserToken;
 import com.hungtin.tako.takobackend.auth.repo.UserTokenRepo;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -31,23 +30,24 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    String authorizationHeader = request.getHeader("Authorization");
-    if (Objects.nonNull(authorizationHeader)
-        && authorizationHeader.startsWith("Bearer ")
-        && SecurityContextHolder.getContext().getAuthentication() == null) {
-      String tokenValue = authorizationHeader.substring(7);
-      Optional<UserToken> token = userTokenRepo.findOneByValue(tokenValue);
 
-      if (token.isEmpty()) {
-        throw new AuthenticationCredentialsNotFoundException("User token is not valid");
-      }
-      UserAccount userAccount = token.get().getUserAccount();
+    Optional<String> optAuthHeader = Optional.ofNullable(request.getHeader("Authorization"));
+    UserToken token = optAuthHeader
+        .filter(t -> t.startsWith("Bearer "))
+        .map(t -> t.substring(7))
+        .flatMap(userTokenRepo::findOneByValue)
+        .orElseThrow(() -> {
+          throw new AuthenticationCredentialsNotFoundException("User token is not valid");
+        });
 
-      UsernamePasswordAuthenticationToken authToken =
-          new UsernamePasswordAuthenticationToken(
-              userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
-      SecurityContextHolder.getContext().setAuthentication(authToken);
-    }
+    UserAccount userAccount = token.getUserAccount();
+
+    UsernamePasswordAuthenticationToken authToken =
+        new UsernamePasswordAuthenticationToken(
+            userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(authToken);
+
     filterChain.doFilter(request, response);
   }
+
 }

@@ -1,5 +1,6 @@
 package com.hungtin.tako.takobackend.post.service;
 
+import com.hungtin.tako.takobackend.auth.service.AuthService;
 import com.hungtin.tako.takobackend.post.http.CreatePostRequest;
 import com.hungtin.tako.takobackend.post.http.PostResponse;
 import com.hungtin.tako.takobackend.post.http.UpdatePostRequest;
@@ -18,12 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class PostService {
 
+  private final AuthService authService;
   private final PostRepo postRepo;
   private final PostMapper postMapper;
 
   @Transactional
   public PostResponse create(CreatePostRequest request) {
-    return postMapper.transform(postRepo.save(postMapper.transform(request)));
+    Post post = postMapper.transform(request);
+    post.setUser(authService.getCurrentUser().getUser());
+    return postMapper.transform(post);
   }
 
   public void delete(Long id) {
