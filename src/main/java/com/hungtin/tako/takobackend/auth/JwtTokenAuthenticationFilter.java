@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,21 +30,11 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
-    // if the request got authorization header and it starts with Bearer
-    // and the current thread hasn't login yet
-    // extract the jwt token to get the current logged in user
-    Optional<String> jwtToken = extractJwtToken(request);
-    if (jwtToken.isPresent()) {
-      String token = jwtToken.get();
-
-      String username = jwtTokenService.validateToken(token);
-      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-      UsernamePasswordAuthenticationToken loggedInToken =
-          new UsernamePasswordAuthenticationToken(
-              userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-      SecurityContextHolder.getContext().setAuthentication(loggedInToken);
-    }
-
+    extractJwtToken(request)
+        .map(jwtTokenService::validateToken)
+        .map(userDetailsService::loadUserByUsername)
+        .map(u -> new UsernamePasswordAuthenticationToken(u, u.getPassword(), u.getAuthorities()))
+        .ifPresent(loggedTok -> SecurityContextHolder.getContext().setAuthentication(loggedTok));
     filterChain.doFilter(request, response);
   }
 

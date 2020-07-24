@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenService {
 
-  private static final int EXPIRATION_DURATION = 60 * 60;
+  private static final int EXPIRATION_DURATION = 24 * 60 * 60;
 
   @Value("${jwt.secret}")
   private String secret;

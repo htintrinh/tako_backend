@@ -55,6 +55,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
   // This is necessary to create the
   @Bean
+  @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }

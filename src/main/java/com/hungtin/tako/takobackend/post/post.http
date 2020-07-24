@@ -1,0 +1,16 @@
+POST http://localhost:8080/post
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU2NjA2MDIsInVzZXJuYW1lIjoidGVzdDIifQ.YFtToPwOBuNAI-_HTrI5WZ2RSYRLvVNj1qvWsr1bppI
+
+{
+   "title": "New post 1",
+   "body": "Awesome post by me"
+}
+
+###
+GET http://localhost:8080/posts
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU2NjA2MDIsInVzZXJuYW1lIjoidGVzdDIifQ.YFtToPwOBuNAI-_HTrI5WZ2RSYRLvVNj1qvWsr1bppI
+
+###
+DELETE http://localhost:8080/posts/7
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU2NjA2MDIsInVzZXJuYW1lIjoidGVzdDIifQ.YFtToPwOBuNAI-_HTrI5WZ2RSYRLvVNj1qvWsr1bppI

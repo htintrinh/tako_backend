@@ -39,6 +39,7 @@ public class AuthService {
   private final UserRepo userRepo;
   private final UserAccountMapper userAccountMapper;
 
+  @Transactional
   public VerifiedToken makeVerifiedToken(UserAccount userAccount) {
     // create verified token
     String tokenValue = UUID.randomUUID().toString();

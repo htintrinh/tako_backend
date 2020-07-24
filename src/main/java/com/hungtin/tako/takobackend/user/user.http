@@ -1,0 +1,15 @@
+GET http://localhost:8080/user/me
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU1NzMzNjIsInVzZXJuYW1lIjoidGVzdDIifQ.--S8Cox26R8lhZznTd1btrlj9d5QZkhPtLRZvMAGeIk
+
+###
+
+POST http://localhost:8080/user/me
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU1NzMzNjIsInVzZXJuYW1lIjoidGVzdDIifQ.--S8Cox26R8lhZznTd1btrlj9d5QZkhPtLRZvMAGeIk
+Content-Type: application/json
+
+{
+    "name": "Hung Tin",
+    "dob": "1994-04-25",
+    "gender": "MALE",
+    "phone": "0123123123"
+}

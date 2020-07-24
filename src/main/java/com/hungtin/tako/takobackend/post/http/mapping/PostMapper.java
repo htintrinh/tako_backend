@@ -18,7 +18,7 @@ public class PostMapper {
   }
 
   public Post transform(CreatePostRequest request) {
-    return Post.builder().title(request.getTitle()).body(request.getTitle()).build();
+    return Post.builder().title(request.getTitle()).body(request.getBody()).build();
   }
 
   public Post transform(UpdatePostRequest request) {

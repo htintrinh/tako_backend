@@ -22,19 +22,3 @@ Content-Type: application/json
 GET http://localhost:8080/auth/confirm-code/da44a90b-f225-4dbf-bb09-01a6100e4be4
 
 ###
-
-GET http://localhost:8080/user/me
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTUzNDIxMTksInVzZXJuYW1lIjoidGVzdDIifQ.pJJT9rpPjgTYxVctBGrmVY_FCMmEg6Vqx9tNJoVDCJE
-
-###
-
-POST http://localhost:8080/user/me
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTUzNDIxMTksInVzZXJuYW1lIjoidGVzdDIifQ.pJJT9rpPjgTYxVctBGrmVY_FCMmEg6Vqx9tNJoVDCJE
-Content-Type: application/json
-
-{
-    "name": "Hung Tin",
-    "dob": "1994-04-25",
-    "gender": "MALE",
-    "phone": "0123123123"
-}

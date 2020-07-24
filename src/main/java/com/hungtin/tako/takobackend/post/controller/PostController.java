@@ -2,14 +2,16 @@ package com.hungtin.tako.takobackend.post.controller;
 
 import com.hungtin.tako.takobackend.post.http.CreatePostRequest;
 import com.hungtin.tako.takobackend.post.http.PostResponse;
-import com.hungtin.tako.takobackend.post.http.mapping.PostMapper;
 import com.hungtin.tako.takobackend.post.service.PostService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("/api")
@@ -18,11 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
   private final PostService postService;
-  private final PostMapper postMapper;
 
-  @PostMapping("/post")
-  public ResponseEntity<PostResponse> create(CreatePostRequest request) {
+  @PostMapping("/posts")
+  public ResponseEntity<PostResponse> create(@RequestBody CreatePostRequest request) {
     return ResponseEntity.ok(postService.create(request));
+  }
+
+  @DeleteMapping("/posts/{id}")
+  public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    postService.delete(id);
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping("/posts")
