@@ -19,6 +19,9 @@ public class JwtTokenService {
   @Value("${jwt.secret}")
   private String secret;
 
+  @Value("${jwt.expirationTime}")
+  private Long expirationTime;
+
   public String generateToken(Authentication authentication) {
     Algorithm algorithm = Algorithm.HMAC256(secret);
     // The principle that we get from the the authentication
@@ -27,7 +30,7 @@ public class JwtTokenService {
     UserAccount userAccount = (UserAccount) authentication.getPrincipal();
 
     return JWT.create()
-        .withExpiresAt(Date.from(Instant.now().plusSeconds(EXPIRATION_DURATION)))
+        .withExpiresAt(Date.from(Instant.now().plusSeconds(expirationTime)))
         .withClaim("username", userAccount.getUsername())
         .sign(algorithm);
   }

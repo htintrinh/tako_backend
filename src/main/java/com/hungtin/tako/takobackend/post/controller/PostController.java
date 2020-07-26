@@ -1,5 +1,7 @@
 package com.hungtin.tako.takobackend.post.controller;
 
+import com.hungtin.tako.takobackend.comment.CommentResponse;
+import com.hungtin.tako.takobackend.comment.CommentService;
 import com.hungtin.tako.takobackend.post.http.CreatePostRequest;
 import com.hungtin.tako.takobackend.post.http.PostResponse;
 import com.hungtin.tako.takobackend.post.service.PostService;
@@ -14,12 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api")
+@RestController
 @Slf4j
 @AllArgsConstructor
 public class PostController {
 
   private final PostService postService;
+  private final CommentService commentService;
 
   @PostMapping("/posts")
   public ResponseEntity<PostResponse> create(@RequestBody CreatePostRequest request) {
@@ -35,5 +38,10 @@ public class PostController {
   @GetMapping("/posts")
   public ResponseEntity<List<PostResponse>> getAll() {
     return ResponseEntity.ok(postService.getAll());
+  }
+
+  @GetMapping("/posts/{id}/comments")
+  public ResponseEntity<List<CommentResponse>> getAllComments(@PathVariable("id") Long postId) {
+    return ResponseEntity.ok(commentService.listByPostId(postId));
   }
 }

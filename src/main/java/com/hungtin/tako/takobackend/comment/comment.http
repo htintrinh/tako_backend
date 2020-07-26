@@ -1,16 +1,16 @@
-POST http://localhost:8080/posts
-Content-Type: application/json
+POST http://localhost:8080/comments
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU3NzA4NDcsInVzZXJuYW1lIjoidGVzdDIifQ.ozXn6FShDH0Qw0OokLYos5vRosiDU2JKfY2dXGOaaao
+Content-Type: application/json
 
 {
-   "title": "New post 1",
-   "body": "Awesome post by me"
+   "postId": 9,
+   "content": "Hello"
 }
 
 ###
-GET http://localhost:8080/posts
+GET http://localhost:8080/comments
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU3NzA4NDcsInVzZXJuYW1lIjoidGVzdDIifQ.ozXn6FShDH0Qw0OokLYos5vRosiDU2JKfY2dXGOaaao
 
 ###
-DELETE http://localhost:8080/posts/8
+GET http://localhost:8080/posts/9/comments
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU3NzA4NDcsInVzZXJuYW1lIjoidGVzdDIifQ.ozXn6FShDH0Qw0OokLYos5vRosiDU2JKfY2dXGOaaao

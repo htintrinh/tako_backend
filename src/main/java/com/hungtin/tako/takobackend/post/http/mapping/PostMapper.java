@@ -11,6 +11,7 @@ public class PostMapper {
 
   public PostResponse transform(Post post) {
     return PostResponse.builder()
+        .id(post.getId())
         .title(post.getTitle())
         .body(post.getBody())
         .author(post.getUser().getName())
