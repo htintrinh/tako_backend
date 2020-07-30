@@ -1,4 +1,4 @@
-package com.hungtin.tako.takobackend.auth.config;
+package com.hungtin.tako.takobackend;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -13,7 +13,6 @@ public class WebConfigure implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
         .allowedOrigins("*")
-        .allowedMethods("*")
         .allowedMethods("*")
         .maxAge(3600L)
         .allowedHeaders("*")

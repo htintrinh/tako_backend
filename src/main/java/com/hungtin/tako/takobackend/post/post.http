@@ -8,8 +8,9 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU3NzA4N
 }
 
 ###
-GET http://localhost:8080/posts
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU3NzA4NDcsInVzZXJuYW1lIjoidGVzdDIifQ.ozXn6FShDH0Qw0OokLYos5vRosiDU2JKfY2dXGOaaao
+OPTIONS http://localhost:8080/posts
+Origin: http://localhost:4200
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTYxNjcwMTMsInVzZXJuYW1lIjoidGVzdDIifQ.auFtRkZtIid_yKcTN7V_DRrNvwz608kIVbgM71aCOBM
 
 ###
 DELETE http://localhost:8080/posts/8

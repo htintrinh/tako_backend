@@ -28,10 +28,12 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
     http.csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers("/auth/login", "/auth/register", "/auth/confirm-code/**")
+        .antMatchers("/auth/login", "/auth/register",
+            "/auth/confirm-code/**", "/auth/refresh-token")
         .permitAll()
         .anyRequest()
         .authenticated();
+    http.cors();
     //    http.addFilterBefore(tokenAuthenticationFilter,
     // UsernamePasswordAuthenticationFilter.class)
     http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

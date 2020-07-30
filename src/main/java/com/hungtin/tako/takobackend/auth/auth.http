@@ -22,3 +22,9 @@ Content-Type: application/json
 GET http://localhost:8080/auth/confirm-code/da44a90b-f225-4dbf-bb09-01a6100e4be4
 
 ###
+POST http://localhost:8080/auth/refresh-token
+Content-Type: application/json
+
+{
+   "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTYwODc3NTMsInVzZXJuYW1lIjoidGVzdDIifQ.vBHn6dUVWRsqqs-NEO7Xbet1o_F20gxvAIVQZc8Yt9I"
+}

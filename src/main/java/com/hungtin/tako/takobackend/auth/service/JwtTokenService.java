@@ -19,19 +19,12 @@ public class JwtTokenService {
   @Value("${jwt.secret}")
   private String secret;
 
-  @Value("${jwt.expirationTime}")
-  private Long expirationTime;
 
-  public String generateToken(Authentication authentication) {
+  public String generateToken(String username, Long expirationTime) {
     Algorithm algorithm = Algorithm.HMAC256(secret);
-    // The principle that we get from the the authentication
-    // is not the username but the user object that we provide
-    // to the implementation of UserDetailsService
-    UserAccount userAccount = (UserAccount) authentication.getPrincipal();
-
     return JWT.create()
         .withExpiresAt(Date.from(Instant.now().plusSeconds(expirationTime)))
-        .withClaim("username", userAccount.getUsername())
+        .withClaim("username", username)
         .sign(algorithm);
   }
 

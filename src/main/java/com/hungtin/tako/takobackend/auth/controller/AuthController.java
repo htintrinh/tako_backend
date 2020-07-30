@@ -2,6 +2,7 @@ package com.hungtin.tako.takobackend.auth.controller;
 
 import com.hungtin.tako.takobackend.auth.http.LoginRequest;
 import com.hungtin.tako.takobackend.auth.http.LoginResponse;
+import com.hungtin.tako.takobackend.auth.http.RefreshTokenGenReq;
 import com.hungtin.tako.takobackend.auth.http.UserAccountMapper;
 import com.hungtin.tako.takobackend.auth.http.UserDetailResponse;
 import com.hungtin.tako.takobackend.auth.http.UserRegisterRequest;
@@ -9,6 +10,8 @@ import com.hungtin.tako.takobackend.auth.model.UserAccount;
 import com.hungtin.tako.takobackend.auth.service.AuthService;
 import com.hungtin.tako.takobackend.mail.model.MailNotification;
 import com.hungtin.tako.takobackend.mail.service.MailService;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,5 +65,17 @@ public class AuthController {
     }
 
     return new ResponseEntity<>("Failed to authorize the code", HttpStatus.UNAUTHORIZED);
+  }
+
+  @PostMapping("/refresh-token")
+  public ResponseEntity<LoginResponse> refreshToken(@RequestBody RefreshTokenGenReq req) {
+    return ResponseEntity.ok(authService.refreshToken(req.getRefreshToken()));
+  }
+
+  @GetMapping("/test")
+  public ResponseEntity<Map<String, String>> test() {
+    Map<String, String> map = new HashMap<>();
+    map.put("test","value");
+    return ResponseEntity.ok(map);
   }
 }

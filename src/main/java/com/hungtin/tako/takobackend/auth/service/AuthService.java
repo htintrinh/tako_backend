@@ -17,7 +17,8 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,8 +28,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthService {
+
+  @Value("${jwt.accessToken.expirationTime}")
+  private Long accessTkExpTime;
+
+  @Value("${jwt.refreshToken.expirationTime}")
+  private Long refreshTkExpTime;
 
   private final UserAccountRepo userAccountRepo;
   private final VerifiedTokenRepo verifiedTokenRepo;
@@ -77,9 +84,23 @@ public class AuthService {
         new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 
     Authentication authenticatedToken = authenticationManager.authenticate(token);
-    String jwtToken = jwtTokenService.generateToken(authenticatedToken);
+    String username = ((UserAccount) authenticatedToken.getPrincipal()).getUsername();
+
+    String jwtToken = jwtTokenService.generateToken(username, accessTkExpTime);
+    String refreshToken = jwtTokenService.generateToken(username, refreshTkExpTime);
     // return the response
-    return new LoginResponse(jwtToken);
+    return LoginResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+  }
+
+  public LoginResponse refreshToken(String refreshToken) {
+    String username = jwtTokenService.validateToken(refreshToken);
+
+    String newAccessToken = jwtTokenService.generateToken(username, accessTkExpTime);
+    String newRefreshToken = jwtTokenService.generateToken(username, refreshTkExpTime);
+
+    return LoginResponse.builder()
+        .accessToken(newAccessToken)
+        .refreshToken(newRefreshToken).build();
   }
 
   public LoginResponse loginWithTokenServerBase(LoginRequest request) {
@@ -92,7 +113,7 @@ public class AuthService {
     userTokenRepo.save(userToken);
 
     // return the response
-    return new LoginResponse(tokenValue);
+    return new LoginResponse(tokenValue, tokenValue);
   }
 
   @Transactional
