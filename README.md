@@ -1,3 +1,8 @@
-# tako_backend
+# wiki backend
 
-Back-end web service for automation EC bussiness.
+Spring backend
+
+Run by
+```
+gradle bootRun
+```
