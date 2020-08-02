@@ -51,6 +51,10 @@ public class PostService {
     return postRepo.findAll().stream().map(postMapper::transform).collect(Collectors.toList());
   }
 
+  public Optional<PostResponse> getById(Long id) {
+    return postRepo.findById(id).map(postMapper::transform);
+  }
+
   @Transactional
   public PostResponse update(UpdatePostRequest request) {
     if (isCurrentUserOwnPost(request.getId())) {
@@ -70,7 +74,7 @@ public class PostService {
         .map(Post::getUser)
         .map(User::getId);
 
-    return optUserId.isEmpty()
+    return !optUserId.isPresent()
         || !optUserId.get().equals(userAccount.getUser().getId());
   }
 }

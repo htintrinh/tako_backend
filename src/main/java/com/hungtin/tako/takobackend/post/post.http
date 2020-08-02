@@ -1,6 +1,6 @@
 POST http://localhost:8080/posts
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTU3NzA4NDcsInVzZXJuYW1lIjoidGVzdDIifQ.ozXn6FShDH0Qw0OokLYos5vRosiDU2JKfY2dXGOaaao
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTY0NDY4ODEsInVzZXJuYW1lIjoidGVzdDIifQ.7BDPSFKCZFX4FaeX0dPNKIcikVO9R5wJ2H-GJdTEhk8
 
 {
    "title": "New post 1",

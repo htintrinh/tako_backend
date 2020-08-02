@@ -40,6 +40,11 @@ public class PostController {
     return ResponseEntity.ok(postService.getAll());
   }
 
+  @GetMapping("/posts/{id}")
+  public ResponseEntity<PostResponse> get(@PathVariable Long id) {
+    return ResponseEntity.ok(postService.getById(id).get());
+  }
+
   @GetMapping("/posts/{id}/comments")
   public ResponseEntity<List<CommentResponse>> getAllComments(@PathVariable("id") Long postId) {
     return ResponseEntity.ok(commentService.listByPostId(postId));

@@ -6,9 +6,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication()
 @EnableAsync
-public class TakoBackendApplication {
+public class WikiBackendApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(TakoBackendApplication.class, args);
+    SpringApplication.run(WikiBackendApplication.class, args);
   }
 }

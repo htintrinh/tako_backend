@@ -3,6 +3,7 @@ package com.hungtin.tako.takobackend.auth.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.hungtin.tako.takobackend.auth.model.UserAccount;
 import java.time.Instant;
@@ -31,7 +32,12 @@ public class JwtTokenService {
   public String validateToken(String token) {
     Algorithm algorithm = Algorithm.HMAC256(secret);
     JWTVerifier verifier = JWT.require(algorithm).build();
-    verifier.verify(token);
+    try {
+      verifier.verify(token);
+    } catch(JWTVerificationException e) {
+      // if verify not success return empty string as username
+      return "";
+    }
 
     DecodedJWT decodedJWT = JWT.decode(token);
     return decodedJWT.getClaim("username").asString();
